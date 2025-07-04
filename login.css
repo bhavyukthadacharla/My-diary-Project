@@ -1,0 +1,51 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Sofia&display=swap');
+
+body {
+    font-family: 'Sofia', sans-serif;
+    background-color: #db9fc2; 
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('post2.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+.Login-Card {
+    background-color: #e0c0d3;
+    color: black;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.2),
+        0 8px 20px rgba(214, 51, 132, 0.3),
+        0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.Login-Card .card-title,
+.Login-Card .card-text,
+.Login-Card label,
+.Login-Card a {
+    color: black;
+}
+.custom-login-button {
+  background-image: linear-gradient(to right, rgb(234, 214, 230), rgb(255, 230, 250)) !important;
+  color: black !important;
+  border: none !important;
+}
+
+.custom-login-button:hover {
+  background-image: linear-gradient(to right, rgb(255, 230, 250), rgb(234, 214, 230)) !important;
+  color: black !important;
+}
+

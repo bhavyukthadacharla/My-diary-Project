@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Sofia&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Sofia', sans-serif;
+}
+
+.full-bg {
+  background-color: #db9fc2;
+  min-height: 100vh;
+}
+
+.Login-Card {
+  width: 500px;
+  padding: 25px;
+  border-radius: 12px;
+  background-color: #e0c0d3;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.2),
+    0 8px 15px rgba(218, 143, 189, 0.3),
+    0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('post2.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+#RegisterButton {
+  background-image: linear-gradient(to right, rgb(234, 214, 230), rgb(255, 230, 250));
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: 'Sofia', sans-serif;
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.2),
+    0 6px 12px rgba(234, 214, 230, 0.3),
+    0 10px 15px rgba(255, 230, 250, 0.2);
+  transition: transform 0.2s ease;
+}
+
+#RegisterButton:hover {
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: underline;
+  text-decoration: underline;
+}
+

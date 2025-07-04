@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post Page</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Sofia&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="post.css" />
+</head>
+
+<body class="full-bg">
+
+<a href="feedPage.html" class="back-button">← Back</a>
+
+
+  <form class="formDiv" id="postForm">
+    <div class="mb-3">
+      <label for="PostTitle" class="form-label">Post Title</label>
+      <input type="text" class="form-control" id="PostTitle" name="postTitle" placeholder="Title Here" required />
+    </div>
+    <div class="mb-3">
+      <label for="DayDescription" class="form-label">Describe your day</label>
+      <textarea class="form-control" id="DayDescription" name="postDescription" rows="10" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100" id="postButton">Post my day</button>
+
+    <div id="successMessage" class="alert alert-success mt-3 d-none" role="alert">
+      Posted successfully!
+    </div>
+  </form>
+
+  <script>
+    function getQueryParam(key) {
+      return new URLSearchParams(window.location.search).get(key);
+    }
+
+    window.onload = () => {
+      const isEdit = getQueryParam("edit");
+      if (isEdit === "true") {
+        const title = decodeURIComponent(getQueryParam("title") || "");
+        const description = decodeURIComponent(getQueryParam("description") || "");
+        document.getElementById("PostTitle").value = title;
+        document.getElementById("DayDescription").value = description;
+        document.getElementById("postButton").textContent = "Update Post";
+      }
+    };
+
+    const form = document.getElementById('postForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const postTitle = document.getElementById("PostTitle").value.trim();
+      const postDescription = document.getElementById("DayDescription").value.trim();
+      const userID = localStorage.getItem("userID");
+
+      if (!userID) {
+        alert("User not logged in. Please login again.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      if (!postTitle || !postDescription) {
+        alert("Please fill in both fields before posting.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/newPost", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ postTitle, postDescription, userID })
+        });
+
+        if (response.ok) {
+          document.getElementById("successMessage").classList.remove("d-none");
+          setTimeout(() => {
+            window.location.href = "feedPage.html";
+          }, 1500);
+        } else {
+          const errorText = await response.text();
+          alert("Failed to post: " + errorText);
+        }
+      } catch (err) {
+        console.error("Error posting:", err);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+

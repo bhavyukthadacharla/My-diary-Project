@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Daily Journal - Login</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./login.css">
+</head>
+<body class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="card Login-Card shadow" style="width: 500px;">
+    <div class="card-body text-center">
+      <h1 class="card-title">The Daily Journal</h1>
+      <p class="card-text">Please Login to continue</p>
+
+      <form id="loginForm" class="text-start">
+        <div class="mb-3">
+          <label for="emailInput" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="emailInput" name="email" placeholder="name@example.com" required />
+        </div>
+        <div class="mb-3">
+          <label for="passwordInput" class="form-label">Password</label>
+          <input type="password" class="form-control" id="passwordInput" name="password" required />
+        </div>
+        <p>Don't have an account? <a href="./Registration.html">Register Here</a></p>
+       <button type="submit" class="btn w-100 custom-login-button">Login</button>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('emailInput').value;
+      const password = document.getElementById('passwordInput').value;
+
+      try {
+        const response = await fetch('/userLogin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('userID', result.userID);
+          window.location.href = 'feedPage.html';
+        } else {
+          alert(result.message || 'Login failed');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('Could not connect to the server. Please try again later.');
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

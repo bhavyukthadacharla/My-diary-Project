@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Journal Feed</title>
+
+  <link rel="stylesheet" href="feedPage.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sofia&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="top-right-buttons">
+    <button class="action-btn" onclick="location.href='Post.html'">New Post</button>
+    <button class="action-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="header">
+    <h1>YOUR POSTS 📝</h1>
+  </div>
+
+  <div class="content" id="postsContainer">
+
+    <div id="noPosts" class="no-posts-container d-none">
+      <p class="no-posts-text">No posts yet, start your journaling right now!</p>
+      <a href="Post.html" class="create-post-btn">Create First Post</a>
+    </div>
+
+    <div id="postsList"></div>
+  </div>
+
+<script>
+  const userID = localStorage.getItem("userID");
+  const noPosts = document.getElementById("noPosts");
+  const postsList = document.getElementById("postsList");
+
+  function getPreview(text, charLimit) {
+    if (text.length <= charLimit) return text;
+    return text.slice(0, charLimit) + "...";
+  }
+
+  fetch(`http://localhost:3000/getMyPosts?userID=${encodeURIComponent(userID)}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to load posts");
+      return res.json();
+    })
+    .then(posts => {
+      if (!posts || posts.length === 0) {
+        noPosts.classList.remove("d-none");
+        return;
+      }
+
+      noPosts.classList.add("d-none");
+      postsList.innerHTML = "";
+
+      posts.forEach(post => {
+        const postCard = document.createElement("div");
+        postCard.className = "Post";
+        postCard.innerHTML = `
+          <h2>${post.postTitle}</h2>
+          <p>${getPreview(post.postDescription, 150)}</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="dedicated page.html?title=${encodeURIComponent(post.postTitle)}&description=${encodeURIComponent(post.postDescription)}" class="viewpost">View Full Post</a>
+            <a href="Post.html?edit=true&title=${encodeURIComponent(post.postTitle)}&description=${encodeURIComponent(post.postDescription)}" class="viewpost">Edit Post</a>
+          </div>
+        `;
+        postsList.appendChild(postCard);
+      });
+    })
+    .catch(err => {
+      console.error("⚠️ Error fetching posts:", err);
+      alert("Could not load posts.");
+    });
+
+  function logout() {
+    localStorage.removeItem("userID");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
+
